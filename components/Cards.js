@@ -22,38 +22,42 @@
 // Use your function to create a card for each of the articles, and append each card to the DOM.
 
 const cardsContainer = document.querySelector('.cards-container');
+const errorsContainer = document.querySelector('.errors-container')
 
 axios.get('https://lambda-times-api.herokuapp.com/articles')
     .then(res => {
-        for (i = 0; i < res.data.articles.javascript.length; i++){
-            cardsContainer.appendChild(cardMaker(res.data.articles.javascript[i]))
-        }
-        for (i = 0; i < res.data.articles.bootstrap.length; i++){
-            cardsContainer.appendChild(cardMaker(res.data.articles.bootstrap[i]))
-        }
-        for (i = 0; i < res.data.articles.technology.length; i++){
-            cardsContainer.appendChild(cardMaker(res.data.articles.technology[i]))
-        }
-        for (i = 0; i < res.data.articles.jquery.length; i++){
-            cardsContainer.appendChild(cardMaker(res.data.articles.jquery[i]))
-        }
-        for (i = 0; i < res.data.articles.node.length; i++){
-            cardsContainer.appendChild(cardMaker(res.data.articles.node[i]))
-        }
+        // for (i = 0; i < res.data.articles.javascript.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.javascript[i]))
+        // }
+        // for (i = 0; i < res.data.articles.bootstrap.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.bootstrap[i]))
+        // }
+        // for (i = 0; i < res.data.articles.technology.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.technology[i]))
+        // }
+        // for (i = 0; i < res.data.articles.jquery.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.jquery[i]))
+        // }
+        // for (i = 0; i < res.data.articles.node.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.node[i]))
+        // } // ^^ FIRST VERSION - MANUALLY WENT THROUGH TOPICS
 
-
-
-
-        // console.log(Object.data.articles.keys(res))
-    //     Object.data.articles.entries(res).forEach(entry => {
-    //         for (i = 0; i < res.data.articles.length; i++){
-    //             cardsContainer.appendChild(cardMaker(res.data.articles.entry[i]))
-    //         }            
-    //     })
+        for (const [topic, content] of Object.entries(res.data.articles)){
+            content.forEach(function(item){
+                cardsContainer.appendChild(cardMaker(item))
+            })
+        }
     })
     .catch(err => {
-        debugger;
+        errorsContainer.appendChild(cardMaker({
+            "id": null,
+            "headline": "Error 404: Network Request Failed",
+            "authorPhoto": null,
+            "authorName": null
+        }))
     })
+
+    
 
 function cardMaker(articleObject) {
     // create the elements 
@@ -89,11 +93,12 @@ function cardMaker(articleObject) {
     return card;
 }
 
-console.log(cardMaker({
-    "id": "0802b90e-4057-45c8-b088-600e6aaec339",
-    "headline": "ES8: The Next Step in the Evolution of Javascript and What it Means For Your Projects",
-    "authorPhoto": "https://tk-assets.lambdaschool.com/08d1372e-e393-47f1-ac44-fcb7d0baf0e2_sir.jpg",
-    "authorName": "SIR RUFF'N'STUFF"
-}))
+// // TO TEST CARD ACCURACY:
+// console.log(cardMaker({
+//     "id": "0802b90e-4057-45c8-b088-600e6aaec339",
+//     "headline": "ES8: The Next Step in the Evolution of Javascript and What it Means For Your Projects",
+//     "authorPhoto": "https://tk-assets.lambdaschool.com/08d1372e-e393-47f1-ac44-fcb7d0baf0e2_sir.jpg",
+//     "authorName": "SIR RUFF'N'STUFF"
+// }))
 
 
