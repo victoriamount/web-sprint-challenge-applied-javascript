@@ -27,5 +27,5 @@ function tabConstructor(topic){
     tab.classList.add('tab')
     tab.textContent = topic
 
-    return tab // Wasted time here, DON'T FORGET IN THE FUTURE
+    return tab; // Wasted time here, DON'T FORGET IN THE FUTURE
 }
