@@ -20,3 +20,85 @@
 // Add a listener for click events so that when a user clicks on a card, the headline of the article is logged to the console.
 //
 // Use your function to create a card for each of the articles, and append each card to the DOM.
+
+const cardsContainer = document.querySelector('.cards-container');
+const errorsContainer = document.querySelector('.errors-container')
+
+axios.get('https://lambda-times-api.herokuapp.com/articles')
+    .then(res => {
+        // for (i = 0; i < res.data.articles.javascript.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.javascript[i]))
+        // }
+        // for (i = 0; i < res.data.articles.bootstrap.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.bootstrap[i]))
+        // }
+        // for (i = 0; i < res.data.articles.technology.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.technology[i]))
+        // }
+        // for (i = 0; i < res.data.articles.jquery.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.jquery[i]))
+        // }
+        // for (i = 0; i < res.data.articles.node.length; i++){
+        //     cardsContainer.appendChild(cardMaker(res.data.articles.node[i]))
+        // } // ^^ FIRST VERSION - MANUALLY WENT THROUGH TOPICS
+
+        for (const [topic, content] of Object.entries(res.data.articles)){
+            content.forEach(function(item){
+                cardsContainer.appendChild(cardMaker(item))
+            })
+        }
+    })
+    .catch(err => {
+        errorsContainer.appendChild(cardMaker({
+            "id": null,
+            "headline": "Error 404: Network Request Failed",
+            "authorPhoto": null,
+            "authorName": null
+        }))
+    })
+
+    
+
+function cardMaker(articleObject) {
+    // create the elements 
+    const card = document.createElement('div')
+    const cardHeadline = document.createElement('div')
+    const cardAuthor = document.createElement('div')
+    const cardImgCont = document.createElement('div')
+    const cardImg = document.createElement('img')
+    const cardAuthorSpan = document.createElement('span')
+
+    // fill elements with available info
+    card.classList.add('card')
+    cardHeadline.classList.add('headline')
+    cardHeadline.textContent = articleObject.headline
+    cardAuthor.classList.add('author')
+    cardImgCont.classList.add('img-container')
+    cardImg.src = articleObject.authorPhoto
+    cardAuthorSpan.textContent = `By ${articleObject.authorName}`    
+
+    // create structure
+    card.appendChild(cardHeadline)
+    card.appendChild(cardAuthor)
+    cardAuthor.appendChild(cardImgCont)
+    cardImgCont.appendChild(cardImg)
+    cardAuthor.appendChild(cardAuthorSpan)
+    
+
+
+    card.addEventListener('click', function(event){
+        console.log(cardHeadline.textContent)
+    })
+
+    return card;
+}
+
+// // TO TEST CARD ACCURACY:
+// console.log(cardMaker({
+//     "id": "0802b90e-4057-45c8-b088-600e6aaec339",
+//     "headline": "ES8: The Next Step in the Evolution of Javascript and What it Means For Your Projects",
+//     "authorPhoto": "https://tk-assets.lambdaschool.com/08d1372e-e393-47f1-ac44-fcb7d0baf0e2_sir.jpg",
+//     "authorName": "SIR RUFF'N'STUFF"
+// }))
+
+
