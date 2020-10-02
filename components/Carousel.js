@@ -71,7 +71,6 @@ function carouselMaker(){
     else {
       imgNum = 0;
       imgArr[3].style.display = "none";
-      // imgNum = 0;
       imgArr[imgNum].style.display = 'inline';
     }
 
